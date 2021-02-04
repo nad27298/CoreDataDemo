@@ -124,7 +124,7 @@ class ViewController: UIViewController {
                 return NSNumber.init(value: foundValue.intValue + 1)
             }
         } catch let error as NSError {
-            print("Could not get id primekey. \(error), \(error.userInfo)")
+            print("Could not get id primary key. \(error), \(error.userInfo)")
         }
         return nil
     }
