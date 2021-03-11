@@ -91,16 +91,16 @@ class ViewController: UIViewController {
     // Insert
     func insertData(_ name: String,_ age: Int) {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-        // 1 Lấy ra NSManagedObjectContext
+        // 1 Get NSManagedObjectContext
         let managedContext = appDelegate.persistentContainer.viewContext
-        // 2 Tạo một đối tượng quản lý và insert vào managed object context
+        // 2 Creat object and insert to managed object context
         let entity = NSEntityDescription.entity(forEntityName: "Person", in: managedContext)!
         let person = NSManagedObject(entity: entity, insertInto: managedContext)
-        // 3 Thêm giá trị name vào đối tượng person bằng key-value coding.
+        // 3 Add value name to object person by key-value coding.
         person.setValue(name, forKeyPath: "name")
         person.setValue(age, forKeyPath: "age")
         person.setValue(self.nextAvailble("id", forEntityName: "Person", in: managedContext), forKeyPath: "id")
-        // 4 Save vào bộ nhớ
+        // 4 Save to core data
         do {
             try managedContext.save()
         } catch let error as NSError {
@@ -124,7 +124,7 @@ class ViewController: UIViewController {
                 return NSNumber.init(value: foundValue.intValue + 1)
             }
         } catch let error as NSError {
-            print("Could not get id primekey. \(error), \(error.userInfo)")
+            print("Could not get id primary key. \(error), \(error.userInfo)")
         }
         return nil
     }
@@ -135,11 +135,11 @@ class ViewController: UIViewController {
     func getAll() -> [NSManagedObject] {
         var listData = [NSManagedObject]()
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        //1 Lấy ra NSManagedObjectContext
+        //1 Get NSManagedObjectContext
         let managedContext = appDelegate.persistentContainer.viewContext
-        //2 Fetching từ CoreData
+        //2 Fetching to CoreData
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Person")
-        //3 Xử lý fetch request
+        //3 Fetch request
         do {
             listData = try managedContext.fetch(fetchRequest)
         } catch let error as NSError {
@@ -163,11 +163,11 @@ class ViewController: UIViewController {
     func getData() -> [PersonModel] {
         var listData = [PersonModel]()
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        //1 Lấy ra NSManagedObjectContext
+        //1 Get NSManagedObjectContext
         let managedContext = appDelegate.persistentContainer.viewContext
-        //2 Fetching từ CoreData
+        //2 Fetching to CoreData
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Person")
-        //3 Xử lý fetch request
+        //3 Fetch request
         do {
             let listCata = try managedContext.fetch(fetchRequest)
             for item in listCata {
@@ -195,7 +195,7 @@ class ViewController: UIViewController {
     // Delete Filter
     func deleteId(_ id: Int) -> Bool {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        //1 Lấy ra NSManagedObjectContext
+        //1 Get NSManagedObjectContext
         let managedContext = appDelegate.persistentContainer.viewContext
         //2 Deleting CoreData
         for item in self.getAll() {
@@ -203,7 +203,7 @@ class ViewController: UIViewController {
                 managedContext.delete(item)
             }
         }
-        //3 Save vào bộ nhớ
+        //3 Save to coredata
         do {
             try managedContext.save()
             return true
@@ -216,7 +216,7 @@ class ViewController: UIViewController {
     // Delete All
     func deleteAll() -> Bool {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        //1 Lấy ra NSManagedObjectContext
+        //1 Get NSManagedObjectContext
         let managedContext = appDelegate.persistentContainer.viewContext
         //2 Deleting CoreData
         for item in self.getAll() {
@@ -237,7 +237,7 @@ class ViewController: UIViewController {
     // Update filter
     func updateData(_ newname: String,_ newage: Int,_ id: Int) -> Bool {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        //1 Lấy ra NSManagedObjectContext
+        //1 Get NSManagedObjectContext
         let managedContext = appDelegate.persistentContainer.viewContext
         //2 Updateing CoreData
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Person")
