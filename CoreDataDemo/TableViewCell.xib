@@ -17,49 +17,51 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="List" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BBR-4M-YN5">
-                        <rect key="frame" x="20" y="0.0" width="260" height="70"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="260" id="sSu-c5-I6n"/>
-                        </constraints>
+                        <rect key="frame" x="20" y="0.0" width="259" height="70"/>
                         <fontDescription key="fontDescription" name="TrebuchetMS-Italic" family="Trebuchet MS" pointSize="20"/>
-                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="65F-zW-gWT">
-                        <rect key="frame" x="280" y="0.0" width="39" height="70"/>
+                        <rect key="frame" x="284" y="0.0" width="35" height="70"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="35" id="d9U-hp-SZ9"/>
+                        </constraints>
                         <fontDescription key="fontDescription" name="TrebuchetMS-Italic" family="Trebuchet MS" pointSize="20"/>
-                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U5u-wU-0CO">
                         <rect key="frame" x="324" y="15" width="40" height="40"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="40" id="N2i-Yl-Y8H"/>
-                            <constraint firstAttribute="height" constant="40" id="uDy-Ax-sCc"/>
+                            <constraint firstAttribute="width" constant="40" id="FS0-bK-j87"/>
                         </constraints>
-                        <state key="normal" image="border_color_24px"/>
+                        <state key="normal" image="creditcard" catalog="system"/>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Abu-4L-L1W">
                         <rect key="frame" x="369" y="15" width="40" height="40"/>
                         <constraints>
-                            <constraint firstAttribute="width" secondItem="Abu-4L-L1W" secondAttribute="height" id="lVm-3T-qVj"/>
+                            <constraint firstAttribute="width" secondItem="Abu-4L-L1W" secondAttribute="height" multiplier="1:1" id="ADi-eO-p7s"/>
+                            <constraint firstAttribute="width" constant="40" id="WKt-ft-E3D"/>
                         </constraints>
-                        <state key="normal" image="delete_24px"/>
+                        <state key="normal" image="delete.left" catalog="system"/>
                     </button>
                 </subviews>
+                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
-                    <constraint firstItem="BBR-4M-YN5" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="2cJ-bl-bf8"/>
-                    <constraint firstAttribute="bottom" secondItem="BBR-4M-YN5" secondAttribute="bottom" id="5Dp-fn-xit"/>
-                    <constraint firstAttribute="trailing" secondItem="65F-zW-gWT" secondAttribute="trailing" constant="95" id="D4s-8I-nQQ"/>
-                    <constraint firstItem="65F-zW-gWT" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="Hu8-vB-0vR"/>
-                    <constraint firstItem="65F-zW-gWT" firstAttribute="leading" secondItem="BBR-4M-YN5" secondAttribute="trailing" id="L0O-kY-9br"/>
-                    <constraint firstAttribute="trailing" secondItem="Abu-4L-L1W" secondAttribute="trailing" constant="5" id="W60-aT-uAa"/>
-                    <constraint firstAttribute="bottom" secondItem="65F-zW-gWT" secondAttribute="bottom" id="X7F-IE-Xsr"/>
-                    <constraint firstItem="U5u-wU-0CO" firstAttribute="leading" secondItem="65F-zW-gWT" secondAttribute="trailing" constant="5" id="azW-b1-hs5"/>
-                    <constraint firstItem="BBR-4M-YN5" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="bUn-9Q-fGd"/>
-                    <constraint firstItem="Abu-4L-L1W" firstAttribute="bottom" secondItem="U5u-wU-0CO" secondAttribute="bottom" id="dXf-T6-sr4"/>
-                    <constraint firstItem="U5u-wU-0CO" firstAttribute="centerY" secondItem="BBR-4M-YN5" secondAttribute="centerY" id="rXS-0T-coG"/>
-                    <constraint firstItem="Abu-4L-L1W" firstAttribute="top" secondItem="U5u-wU-0CO" secondAttribute="top" id="xIa-N6-vnH"/>
+                    <constraint firstItem="65F-zW-gWT" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="1vU-Mf-2QS"/>
+                    <constraint firstItem="U5u-wU-0CO" firstAttribute="top" secondItem="Abu-4L-L1W" secondAttribute="top" id="GHm-7S-n1y"/>
+                    <constraint firstItem="U5u-wU-0CO" firstAttribute="bottom" secondItem="Abu-4L-L1W" secondAttribute="bottom" id="OJO-5V-7SC"/>
+                    <constraint firstItem="BBR-4M-YN5" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="Pqk-H0-pLm"/>
+                    <constraint firstItem="65F-zW-gWT" firstAttribute="leading" secondItem="BBR-4M-YN5" secondAttribute="trailing" constant="5" id="SeX-c8-3lq"/>
+                    <constraint firstAttribute="bottom" secondItem="65F-zW-gWT" secondAttribute="bottom" id="UWo-Xn-gR5"/>
+                    <constraint firstItem="Abu-4L-L1W" firstAttribute="leading" secondItem="U5u-wU-0CO" secondAttribute="trailing" constant="5" id="aWg-Eh-MQH"/>
+                    <constraint firstItem="U5u-wU-0CO" firstAttribute="leading" secondItem="65F-zW-gWT" secondAttribute="trailing" constant="5" id="b2U-Cb-Lbr"/>
+                    <constraint firstItem="65F-zW-gWT" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="cHz-JU-Eee"/>
+                    <constraint firstAttribute="trailing" secondItem="Abu-4L-L1W" secondAttribute="trailing" constant="5" id="kML-Mg-5Nf"/>
+                    <constraint firstItem="BBR-4M-YN5" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="qcQ-dJ-YHP"/>
+                    <constraint firstAttribute="bottom" secondItem="BBR-4M-YN5" secondAttribute="bottom" id="yId-E3-S2h"/>
+                    <constraint firstItem="Abu-4L-L1W" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="yg6-v2-3MD"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
@@ -74,7 +76,7 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="border_color_24px" width="20" height="20"/>
-        <image name="delete_24px" width="14" height="18"/>
+        <image name="creditcard" catalog="system" width="128" height="88"/>
+        <image name="delete.left" catalog="system" width="128" height="104"/>
     </resources>
 </document>

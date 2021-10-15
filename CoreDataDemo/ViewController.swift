@@ -37,7 +37,6 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var tvcList: UITableView!
     
-//    var people: [NSManagedObject] = []
     var listName: [PersonModel] = []
     
     override func viewDidLoad() {
@@ -46,7 +45,6 @@ class ViewController: UIViewController {
         tvcList.dataSource = self
         tvcList.layer.cornerRadius = 20
         tvcList.register(UINib(nibName: TableViewCell.className, bundle: nil), forCellReuseIdentifier: TableViewCell.className)
-//        people = getAll()
         listName = getData()
         tvcList.reloadData()
     }
@@ -62,6 +60,8 @@ class ViewController: UIViewController {
         let btn_Save: UIAlertAction = UIAlertAction(title: "Save", style: .default) { [self] (btnSave) in
             let nameadd = alert.textFields![0].text!
             let ageadd = alert.textFields![1].text!
+            guard nameadd.count > 0 else { return }
+            guard ageadd.count > 0 else { return }
             self.insertData(nameadd, Int(ageadd) ?? 0)
             self.listName = getData()
             self.tvcList.reloadData()
@@ -74,7 +74,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func btn_DeleteAll(_ sender: Any) {
-        let alert = UIAlertController(title: "DELETE ALL", message: "Do you want delete all name list?", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Xoá tất cả", message: "Bạn có muốn xoá tất cả dữ liệu", preferredStyle: .alert)
         let btn_DeleteAll = UIAlertAction(title: "Delete All", style: .destructive) { (btnDeleteAll) in
             _ = self.deleteAll()
             self.listName.removeAll()
@@ -268,15 +268,11 @@ class ViewController: UIViewController {
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return people.count
         return listName.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: TableViewCell = tableView.dequeueReusableCell(withIdentifier: TableViewCell.className) as! TableViewCell
-//        let person = people[indexPath.row]
-//        cell.lblName.text = person.value(forKeyPath: "name") as? String
-//        cell.lblAge.text = String((person.value(forKeyPath: "age") as? Int)!)
         cell.lblName.text = listName[indexPath.row].name
         cell.lblAge.text = String(listName[indexPath.row].age)
         cell.btnEdit.addTarget(self, action: #selector(btn_Edit), for: .touchUpInside)
@@ -298,6 +294,8 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         let btn_Save: UIAlertAction = UIAlertAction(title: "Save", style: .default) { [self] (btnSave) in
             let nameadd = alert.textFields![0].text!
             let ageadd = alert.textFields![1].text!
+            guard nameadd.count > 0 else { return }
+            guard ageadd.count > 0 else { return }
             _ = updateData(nameadd, Int(ageadd) ?? 0, listName[i].id)
             self.listName = getData()
             self.tvcList.reloadData()
@@ -316,7 +314,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 70
+        return 50
     }
     
 }
