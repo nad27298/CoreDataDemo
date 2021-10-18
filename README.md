@@ -12,8 +12,7 @@ Khi bạn tạo mới 1 project có tích hợp Core Data thì X Code sẽ tạo
 Ở đây mình tạo 1 entities có tên là **"Person"** với các trường cơ bản là _**name**_, _**id**_, _**age**_.
 ![](https://sv1.upanh.me/2021/10/15/Screen-Shot-2021-10-15-at-16.46.23045df16207cf9eb5.png)
 
-Tạo xong record model Core Data rồi thì bạn hãy tạo 1 class model object để có thể thuận tiện cho việc lưu dữ liệu.
-Class khá đơn giản như sau, trong đó có hàm khởi tại với NSManagedObject với NSManagedObject là đại diện cho 1 object được lưu trong Core Data. 
+Tạo xong record model Core Data rồi thì bạn hãy tạo 1 class model object. Class khá đơn giản như sau, trong đó có hàm khởi tạo với NSManagedObject với NSManagedObject là đại diện cho 1 object được lưu trong Core Data. 
 
 ```swift
 import Foundation
@@ -34,34 +33,70 @@ Okay, đã xong phần tạo record model rồi.
 
 ## Tạo file giao diện cơ bản
 
-Bạn vào file storyboard, tạo layout cơ bản như hình, với 1 table, 1 button **-** để xoá tất cả dữ liệu và 1 button **"+"** để thêm 1 trường dữ liệu.
+Bạn vào file storyboard, tạo layout cơ bản như hình, với 1 table, 1 button để xoá tất cả dữ liệu và 1 button để thêm 1 trường dữ liệu.
 ![](https://sv1.upanh.me/2021/10/15/Screen-Shot-2021-10-15-at-17.03.06a0dc6c6a745e7da8.png)
 
-Sau đó bạn tạo 1 file "TableViewCell" là subclass của UITableViewCell, lúc tạo file nhớ tạo kèm theo file **.xib**. Trong file **.xib** bạn layout như sau:
-
+Sau đó bạn tạo 1 file "TableViewCell" kèm theo file **.xib**. Trong file **.xib** bạn layout 1 label để hiển thị tên, 1 label để hiển thị tuổi, 2 button để sửa và xoá mỗi row tương ứng:
 ![](https://sv1.upanh.me/2021/10/15/Screen-Shot-2021-10-15-at-17.08.257ada2f9c016207c2.png)
 
-Bạn kéo thả **Outlet** và đặt tên như sau:
+Trong **ViewController.swift** bạn setup đơn giản để hiển thị dữ liệu với tableview như sau:
 ```swift
-class TableViewCell: UITableViewCell {
-
-    @IBOutlet weak var btnDelete: UIButton!
-    @IBOutlet weak var btnEdit: UIButton!
-    @IBOutlet weak var lblAge: UILabel!
-    @IBOutlet weak var lblName: UILabel!
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
+class ViewController: UIViewController {
+    @IBOutlet weak var tvcList: UITableView!
+    var listName: [PersonModel] = []
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        tvcList.delegate = self
+        tvcList.dataSource = self
+        tvcList.register(UINib(nibName: TableViewCell.className, bundle: nil), forCellReuseIdentifier: TableViewCell.className)
+    }
+}
+extension ViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return listName.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell: TableViewCell = tableView.dequeueReusableCell(withIdentifier: TableViewCell.className) as! TableViewCell
+        cell.lblName.text = listName[indexPath.row].name
+        cell.lblAge.text = String(listName[indexPath.row].age)
+        cell.btnEdit.addTarget(self, action: #selector(btn_Edit), for: .touchUpInside)
+        cell.btnEdit.tag = indexPath.row
+        cell.btnDelete.addTarget(self, action: #selector(btn_Delete), for: .touchUpInside)
+        cell.btnDelete.tag = indexPath.row
+        return cell
+    }
+    
+    @objc func btn_Edit(_ sender: UIButton) {
+        let i = sender.tag
+    }
+    
+    @objc func btn_Delete(_ sender: UIButton) {
+        let i = sender.tag
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 50
     }
 }
 ```
 
 ## Xử lý dữ liệu với Core Data:
-Sau khi setup xong giao diện thì chúng ta bắt đầu tới phần quan trọng nhất là xử lý dữ liệu với Core Data. Ở đây mình sẽ hướng dẫn các bạn nhập và lấy dữ liệu, thêm, xoá và update các trường dữ liệu trong Core Data.
+Sau khi setup xong giao diện thì chúng ta bắt đầu tới phần quan trọng nhất là xử lý dữ liệu với Core Data. Ở đây mình sẽ hướng dẫn các bạn nhập và lấy dữ liệu, thêm, xoá và update các trường dữ liệu trong Core Data. 
+Bạn hãy tạo 1 file tên **CoreDataServer.swift**. Đây là file bạn để các hàm xử lý với Core Data.
+
+```swift
+import UIKit
+import CoreData
+
+class CoreDataServer {
+    static let shared = CoreDataServer()
+}
+```
 
 ### Nhập dữ liệu.
-
-Trong file **ViewController.swift** bạn thêm các method sau:
+Trong file **CoreDataServer.swift** bạn thêm hàm sau:
 
 ```swift
     // Get ID primekey
@@ -119,9 +154,9 @@ Với hàm _**insertData**_ mình giải thích các bước như sau:
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         //1 Get NSManagedObjectContext
         let managedContext = appDelegate.persistentContainer.viewContext
-        //2 Fetching to CoreData
+        //2 Fetch to CoreData
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Person")
-        //3 Fetch request
+        //3 Get data
         do {
             let listCata = try managedContext.fetch(fetchRequest)
             for item in listCata {
@@ -143,9 +178,9 @@ Với hàm **getData** sẽ trả về **[PersonModel]** bạn đã tạo từ t
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         //1 Get NSManagedObjectContext
         let managedContext = appDelegate.persistentContainer.viewContext
-        //2 Fetching to CoreData
+        //2 Fetch to CoreData
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Person")
-        //3 Fetch request
+        //3 Get NSMângedObject
         do {
             listData = try managedContext.fetch(fetchRequest)
         } catch let error as NSError {
@@ -158,7 +193,7 @@ Với hàm **getData** sẽ trả về **[PersonModel]** bạn đã tạo từ t
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         //1 Get NSManagedObjectContext
         let managedContext = appDelegate.persistentContainer.viewContext
-        //2 Deleting CoreData
+        //2 Delete CoreData
         for item in self.getAllNSMO() {
             if item.value(forKeyPath: "id") as? Int == id {
                 managedContext.delete(item)
@@ -176,7 +211,7 @@ Với hàm **getData** sẽ trả về **[PersonModel]** bạn đã tạo từ t
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         //1 Get NSManagedObjectContext
         let managedContext = appDelegate.persistentContainer.viewContext
-        //2 Updateing CoreData
+        //2 Update CoreData
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Person")
         fetchRequest.predicate = NSPredicate(format: "id == %d", id)
         do {
@@ -198,14 +233,56 @@ Với hàm **getData** sẽ trả về **[PersonModel]** bạn đã tạo từ t
 ```
 2 hàm trên sẽ delete và update theo trường **id** trong **Person**
 
-## Xử lý thao tác dữ liệu.
+## Làm việc với Core Data.
 
-Đã xong phần tạo các hàm để bạn có thể xử lý dễ dàng với CoreData. Giờ chỉ việc goi nó và sử dụng thôi.
-Tạo biến **listName** 
+Đã xong phần tạo các hàm để bạn có thể xử lý dễ dàng với CoreData. Giờ chỉ việc gọi nó và sử dụng thôi nào.
+Đầu tiên bạn dùng hàm _**getData**_ để lấy ra tất cả các dữ liệu.
 ```swift
-    var listName: [PersonModel] = []
+    listName = CoreDataServer.shared.getData()
+```
+Build và chạy thì bạn sẽ thấy chưa có dữ liệu, đơn giản là vì bạn chưa nhập dữ liệu nào.
+Thêm dữ liệu thì đơn giản thôi, bạn gọi hàm **inserData** đã viết từ trước, điền dữ liệu muốn nhập để nó lưu vào Core Data.
+Ví dụ:
+```swift
+    CoreDataServer.shared.insertData("John", 25)
+    CoreDataServer.shared.insertData("Jane", 20)
 ```
 
-}
-}u
-}
+
+Với việc xoá và sửa dữ liệu cũng tương tự
+```swift
+        @objc func btn_Edit(_ sender: UIButton) {
+        let i = sender.tag
+        let alert: UIAlertController = UIAlertController(title: "Đổi tên", message: "Nhập tên mới và tuổi mới", preferredStyle: .alert)
+        alert.addTextField { (txtfldName) in
+            txtfldName.placeholder = "Tên của bạn"
+        }
+        alert.addTextField { (txtfldAge) in
+            txtfldAge.placeholder = "Tuổi của bạn"
+        }
+        let btn_Save: UIAlertAction = UIAlertAction(title: "Lưu", style: .default) { [self] (btnSave) in
+            let nameadd = alert.textFields![0].text!
+            let ageadd = alert.textFields![1].text!
+            guard nameadd.count > 0 else { return }
+            guard ageadd.count > 0 else { return }
+            CoreDataServer.shared.updateData(nameadd, Int(ageadd) ?? 0, listName[i].id)
+            self.listName = CoreDataServer.shared.getData()
+            self.tvcList.reloadData()
+        }
+        let btn_Cancel: UIAlertAction = UIAlertAction(title: "Huỷ", style: .cancel, handler: nil)
+        alert.addAction(btn_Save)
+        alert.addAction(btn_Cancel)
+        self.present(alert, animated: true, completion: nil)
+    }
+    @objc func btn_Delete(_ sender: UIButton) {
+        let i = sender.tag
+        CoreDataServer.shared.deleteId(listName[i].id)
+        listName.remove(at: i)
+        tvcList.reloadData()
+    }
+```
+Bạn có thể build và tận hưởng thành quả. Rất là đơn giản phải không ^^.
+
+## Tổng kết
+Trên đây là những xử lý cơ bản nhất của Core Data trong lập trình iOS với Swift. Tất nhiên vẫn còn rất nhiều thứ hay ho khác về Core Data bạn có thể học nâng cao thêm. Hy vọng bài viết trên sẽ giúp các bạn mới học lập trình iOS hiểu rõ hơn về Core Data
+
