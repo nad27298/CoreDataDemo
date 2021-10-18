@@ -63,9 +63,9 @@ class CoreDataServer {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         //1 Get NSManagedObjectContext
         let managedContext = appDelegate.persistentContainer.viewContext
-        //2 Fetching to CoreData
+        //2 Fetch to CoreData
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Person")
-        //3 Fetch request
+        //3 Get NSMangedObject
         do {
             listData = try managedContext.fetch(fetchRequest)
         } catch let error as NSError {
@@ -91,9 +91,9 @@ class CoreDataServer {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         //1 Get NSManagedObjectContext
         let managedContext = appDelegate.persistentContainer.viewContext
-        //2 Fetching to CoreData
+        //2 Fetch to CoreData
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Person")
-        //3 Fetch request
+        //3 Get data
         do {
             let listCata = try managedContext.fetch(fetchRequest)
             for item in listCata {
@@ -123,7 +123,7 @@ class CoreDataServer {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         //1 Get NSManagedObjectContext
         let managedContext = appDelegate.persistentContainer.viewContext
-        //2 Deleting CoreData
+        //2 Delete CoreData
         for item in self.getAllNSMO() {
             if item.value(forKeyPath: "id") as? Int == id {
                 managedContext.delete(item)
@@ -142,7 +142,7 @@ class CoreDataServer {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         //1 Get NSManagedObjectContext
         let managedContext = appDelegate.persistentContainer.viewContext
-        //2 Deleting CoreData
+        //2 Delete CoreData
         for item in self.getAllNSMO() {
             managedContext.delete(item)
         }
@@ -161,7 +161,7 @@ class CoreDataServer {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         //1 Get NSManagedObjectContext
         let managedContext = appDelegate.persistentContainer.viewContext
-        //2 Updateing CoreData
+        //2 Update CoreData
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Person")
         fetchRequest.predicate = NSPredicate(format: "id == %d", id)
         do {
